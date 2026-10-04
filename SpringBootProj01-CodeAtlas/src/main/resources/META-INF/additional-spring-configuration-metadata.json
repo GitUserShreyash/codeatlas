@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "spring.ai.google.genai.embedding.options.model",
+  "type": "java.lang.String",
+  "description": "A description for 'spring.ai.google.genai.embedding.options.model'"
+}]}

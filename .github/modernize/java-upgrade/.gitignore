@@ -1,0 +1,51 @@
+# ==============================
+# Eclipse
+# ==============================
+.metadata/
+.recommenders/
+.settings/
+.classpath
+.project
+
+# ==============================
+# Java / Maven
+# ==============================
+**/target/
+
+# ==============================
+# Spring Boot secrets
+# ==============================
+**/src/main/resources/application.properties
+**/src/main/resources/application.yml
+**/src/main/resources/application-*.properties
+**/src/main/resources/application-*.yml
+
+# ==============================
+# Node / React
+# ==============================
+**/node_modules/
+**/dist/
+**/.vite/
+
+# Environment files
+**/.env
+**/.env.*
+!.env.example
+
+# ==============================
+# IDE
+# ==============================
+.idea/
+.vscode/
+*.iml
+
+# ==============================
+# Logs
+# ==============================
+*.log
+
+# ==============================
+# OS
+# ==============================
+.DS_Store
+Thumbs.db

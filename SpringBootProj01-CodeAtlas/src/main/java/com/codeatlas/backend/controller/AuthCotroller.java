@@ -12,13 +12,11 @@ import com.codeatlas.backend.entity.User;
 import com.codeatlas.backend.security.AppUserPrincipal;
 import com.codeatlas.backend.security.CurrentUser;
 
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class AuthCotroller {
-	private CurrentUser currentUser;
+	private final CurrentUser currentUser;
 	public AuthCotroller(CurrentUser currentUser) {
 		this.currentUser=currentUser;
 	}

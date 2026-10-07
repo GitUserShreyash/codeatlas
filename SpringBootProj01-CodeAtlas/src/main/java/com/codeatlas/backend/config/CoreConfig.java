@@ -16,14 +16,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class CoreConfig {
 
     @Bean
-    TextEncryptor tokenEncryptor(
-            @Value("${app.token-encryptor-password}") String password,
-            @Value("${app.token-encryptor-salt}") String salt) {
-
-        return Encryptors.text(password, salt);
-    }
-
-    @Bean
     CorsConfigurationSource corsConfigurationSource(
             @Value("${app.cors.allowed-origins}") String allowedOrigins) {
 

@@ -1,27 +1,39 @@
 export const queryKeys = {
-  auth: {
-    all: ["auth"],
-    me: () => [...queryKeys.auth.all, "me"],
-  },
+    auth: {
+        all: ["auth"],
+        me: () => [...queryKeys.auth.all, "me"],
+    },
 
-  repos: {
-    all: ["repos"],
-    list: () => [...queryKeys.repos.all, "list"],
-    detail: (id) => [...queryKeys.repos.all, "detail", id],
-    status: (id) => [...queryKeys.repos.all, "status", id],
-  },
+    repos: {
+        all: ["repos"],
+        list: (refresh = true) => [
+            ...queryKeys.repos.all,
+            "list",
+            refresh,
+        ],
+        detail: (id) => [
+            ...queryKeys.repos.all,
+            "detail",
+            id,
+        ],
+        status: (id) => [
+            ...queryKeys.repos.all,
+            "status",
+            id,
+        ],
+    },
 
-  chat: {
-    all: ["chat"],
-    sessions: (repositoryId) => [
-      ...queryKeys.chat.all,
-      "sessions",
-      repositoryId,
-    ],
-    messages: (sessionId) => [
-      ...queryKeys.chat.all,
-      "messages",
-      sessionId,
-    ],
-  },
-}
+    chat: {
+        all: ["chat"],
+        sessions: (repositoryId) => [
+            ...queryKeys.chat.all,
+            "sessions",
+            repositoryId,
+        ],
+        messages: (sessionId) => [
+            ...queryKeys.chat.all,
+            "messages",
+            sessionId,
+        ],
+    },
+};

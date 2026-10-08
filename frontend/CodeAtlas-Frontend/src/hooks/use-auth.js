@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "react-router-dom"
 
-import { api } from "@/lib/api"
+import { authApi } from "@/api/authApi"
 import { queryKeys } from "@/lib/query-keys"
 
 export const AUTH_COOKIE = "codeatlas_auth"
@@ -23,7 +23,7 @@ export function useCurrentUser() {
     queryKey: queryKeys.auth.me(),
     queryFn: async () => {
       try {
-        return await api.me()
+        return await authApi.me()
       } catch (error) {
         setAuthCookie(false)
         throw error
@@ -38,7 +38,7 @@ export function useLogout() {
 
   return useMutation({
     mutationFn: async () => {
-      await api.logout()
+      await authApi.logout()
     },
     onSuccess: () => {
       setAuthCookie(false)

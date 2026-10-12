@@ -8,5 +8,5 @@ import com.codeatlas.backend.entity.Repository;
 @Mapper(componentModel = "spring")
 public interface RepositoryMapper {
 
-    RepositoryResponse toResponse(Repository repository);
+    public RepositoryResponse toResponse(Repository repository);
 }

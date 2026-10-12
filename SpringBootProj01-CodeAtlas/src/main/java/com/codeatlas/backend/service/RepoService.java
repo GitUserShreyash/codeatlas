@@ -14,6 +14,7 @@ import com.codeatlas.backend.entity.User;
 import com.codeatlas.backend.exceptions.ResourceNotFoundException;
 import com.codeatlas.backend.mapper.RepositoryMapper;
 import com.codeatlas.backend.repository.RepositoryRepository;
+import com.codeatlas.backend.service.github.GithubApiClient;
 
 import lombok.RequiredArgsConstructor;
 

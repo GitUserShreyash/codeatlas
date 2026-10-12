@@ -1,4 +1,4 @@
-package com.codeatlas.backend.service;
+package com.codeatlas.backend.service.github;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;

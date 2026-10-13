@@ -13,28 +13,27 @@ import com.codeatlas.backend.dto.ErrorResponse;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(BadRequestException.class)
-	public ResponseEntity<ErrorResponse> handleEmployeeNotFound(BadRequestException ex){
-		ErrorResponse er = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), ex.getMessage());
+	public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException ex){
+		ErrorResponse er = new ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), ex.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(er);
 	}
 	
 	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<ErrorResponse> handleManagerNotFound(ResourceNotFoundException ex){
+	public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex){
 		ErrorResponse er = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), ex.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(er);
 	}
 	
 	@ExceptionHandler(UnauthorizedException.class)
-	public ResponseEntity<ErrorResponse> handleLeaveNotFound(UnauthorizedException ex){
-		ErrorResponse er = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), ex.getMessage());
+	public ResponseEntity<ErrorResponse> handleUnauthorized(UnauthorizedException ex){
+		ErrorResponse er = new ErrorResponse(LocalDateTime.now(), HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(er);
 	}
-	
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex){
 		ErrorResponse er = new ErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(er);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(er);
 	}
 }
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.coyote.BadRequestException;
+import com.codeatlas.backend.exceptions.BadRequestException;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
@@ -45,8 +45,7 @@ public class IndexingService {
     private long maxFileBytes;
 
     // Start an indexing job after checking repository ownership.
-    public Repository startIndexing(Long repoId, Long userId)
-            throws BadRequestException {
+    public Repository startIndexing(Long repoId, Long userId) {
 
         Repository repo = repositoryRepository
                 .findByIdAndUserId(repoId, userId)

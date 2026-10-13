@@ -7,17 +7,32 @@ import org.springframework.ai.document.Document;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import com.codeatlas.backend.dto.CitationDto;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CitationMapper {
 	
 	private final ObjectMapper objectMapper;
+
+    public List<CitationDto> fromJson(String json) {
+        if (json == null || json.isBlank()) {
+            return List.of();
+        }
+        try {
+            return objectMapper.readValue(json, new TypeReference<List<CitationDto>>() {});
+        } catch (JsonProcessingException e) {
+            log.error("Failed to parse citations JSON: {}", json, e);
+            return List.of();
+        }
+    }
 
     public List<CitationDto> toCitations(List<Document> documents) {
         if (documents == null || documents.isEmpty()) {

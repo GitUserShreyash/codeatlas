@@ -126,7 +126,11 @@
 		    <groupId>org.springframework.ai</groupId>
 		    <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
 		</dependency>
-
+		
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		</dependency>
     </dependencies>
 
     <!-- Spring AI BOM -->

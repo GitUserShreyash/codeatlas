@@ -2,7 +2,6 @@ package com.codeatlas.backend.controller;
 
 import java.util.List;
 
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,8 +64,7 @@ public class RepoController {
 
     @PostMapping("/{id}/index")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public RepositoryResponse index(@PathVariable Long id)
-            throws BadRequestException {
+    public RepositoryResponse index(@PathVariable Long id) {
 
         Long userId = currentUser.require().getId();
 

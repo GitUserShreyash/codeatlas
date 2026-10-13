@@ -22,4 +22,11 @@ public class AppConfig {
 		return executor;
 	}
 
+	@Bean
+	com.fasterxml.jackson.databind.ObjectMapper objectMapper() {
+		com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+		mapper.findAndRegisterModules();
+		return mapper;
+	}
+
 }

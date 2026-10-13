@@ -69,7 +69,7 @@ public class IndexingService {
     }
 
     // Run indexing asynchronously.
-    @Async("indexinngExecutor")
+    @Async("indexingExecutor")
     public void indexAsync(Long repoId, Long userId) {
         try {
             doIndex(repoId, userId);
@@ -88,6 +88,8 @@ public class IndexingService {
         String token = userService.decryptAccessToken(
                 userService.requiredById(userId));
 
+        log.info("Starting indexing for repository {} ({}), branch: {}", repo.getFullName(), repoId, repo.getDefaultBranch());
+
         // Remove old vectors before re-indexing.
         deleteExistingVectors(repoId.toString());
 
@@ -99,6 +101,7 @@ public class IndexingService {
                 repo.getDefaultBranch());
 
         List<String> filePaths = listIndexableFiles(tree);
+        log.info("Found {} indexable files for {}", filePaths.size(), repo.getFullName());
 
         updateProgress(
                 repoId,
@@ -150,6 +153,7 @@ public class IndexingService {
             // Persist batches outside the file-fetch catch block.
             // Vector-store failures should fail the indexing job.
             if (batch.size() >= VECTOR_BATCH_SIZE) {
+                log.info("Embedding and persisting batch of {} document chunks to VectorStore for {}", batch.size(), repo.getFullName());
                 vectorStore.add(batch);
                 batch.clear();
             }

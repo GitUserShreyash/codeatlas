@@ -5,7 +5,7 @@ import java.util.List;
 import com.codeatlas.backend.dto.CitationDto;
 
 public record RetrievedContext (
-		List<CitationDto> citation,
+		List<CitationDto> citations,
 		String contextText){
 
 }

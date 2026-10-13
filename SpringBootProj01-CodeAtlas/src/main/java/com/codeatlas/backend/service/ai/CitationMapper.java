@@ -6,10 +6,18 @@ import java.util.Map;
 import org.springframework.ai.document.Document;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.RequiredArgsConstructor;
+
 import com.codeatlas.backend.dto.CitationDto;
 
 @Component
+@RequiredArgsConstructor
 public class CitationMapper {
+	
+	private final ObjectMapper objectMapper;
 
     public List<CitationDto> toCitations(List<Document> documents) {
         if (documents == null || documents.isEmpty()) {
@@ -55,6 +63,18 @@ public class CitationMapper {
             return Integer.parseInt(String.valueOf(value));
         } catch (NumberFormatException e) {
             return null;
+        }
+    }
+    
+    public String toJson(List<CitationDto> citations) {
+        try {
+            return objectMapper.writeValueAsString(
+                    citations == null ? List.of() : citations
+            );
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(
+                    "Failed to convert citations to JSON", e
+            );
         }
     }
 }

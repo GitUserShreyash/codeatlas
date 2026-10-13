@@ -1,7 +1,6 @@
 
 package com.codeatlas.backend.service.ai;
 
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.ai.document.Document;
@@ -22,7 +21,7 @@ public class CodeContextRetriever {
     private final VectorStore vectorStore;
     private final CitationMapper citationMapper;
 
-    public RetrievedContext retrieve(UUID repositoryId, String question) {
+    public RetrievedContext retrieve(Long repositoryId, String question) {
 
         var filter = new FilterExpressionBuilder()
                 .eq(RagSettings.METADATA_REPO_ID, repositoryId.toString())

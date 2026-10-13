@@ -89,7 +89,7 @@ public class GithubApiClient {
 	public Map<String, Object> getRepoTree(String accessToken, String owner, String repo, String branch){
 		return client(accessToken)
 				.get()
-				.uri("/repos/{owner}/{repo}/git/trees/{branch}?recusive=1", owner, repo, branch)
+				.uri("/repos/{owner}/{repo}/git/trees/{branch}?recursive=1", owner, repo, branch)
 				.retrieve()
 				.body(MAP);
 	}

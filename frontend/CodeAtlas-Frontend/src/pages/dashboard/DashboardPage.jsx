@@ -77,7 +77,7 @@ function RepoStatusBadge({ status }) {
 
 export default function DashboardPage() {
   const { data: _user } = useCurrentUser()
-  const { data: repos = [], isLoading: isLoadingRepos, isError: isErrorRepos, error: reposError, refetch } = useRepos(true)
+  const { data: repos = [], isLoading: isLoadingRepos, isError: isErrorRepos, error: reposError, refetch } = useRepos()
   const refreshRepos = useRefreshRepos()
   const startIndexing = useStartIndex()
 

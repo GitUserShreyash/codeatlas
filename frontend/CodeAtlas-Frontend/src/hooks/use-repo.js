@@ -8,16 +8,16 @@ import { toast } from "@/components/ui/toast";
 import { repoApi } from "@/api/repoApi";
 import { queryKeys } from "@/lib/query-keys";
 
-export function useRepos(refresh = true) {
+export function useRepos() {
     return useQuery({
-        queryKey: queryKeys.repos.list(refresh),
-        queryFn: () => repoApi.listRepos(refresh),
+        queryKey: queryKeys.repos.list(false),
+        queryFn: () => repoApi.listRepos(false),
 
-        // Auto-poll every 2 seconds when any repo is currently indexing
+        // Auto-poll stored repos from database every 2.5 seconds when any repo is currently indexing
         refetchInterval: (query) => {
             const data = query.state.data;
             if (Array.isArray(data) && data.some((r) => r.indexStatus === "INDEXING")) {
-                return 2000;
+                return 2500;
             }
             return false;
         },

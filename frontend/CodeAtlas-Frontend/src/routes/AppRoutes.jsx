@@ -1,11 +1,14 @@
 import { Routes, Route } from "react-router-dom"
 
-import LandingPage from "@/pages/landing/LandingPage"
-import LoginPage from "@/pages/auth/LoginPage"
-import AuthCallbackPage from "@/pages/auth/AuthCallbackPage"
-import DashboardPage from "@/pages/dashboard/DashboardPage"
+import LandingPage from "@/pages/LandingPage"
+import LoginPage from "@/pages/LoginPage"
+import AuthCallbackPage from "@/pages/AuthCallbackPage"
+import DashboardPage from "@/pages/DashboardPage"
+import RepositoriesPage from "@/pages/RepositoriesPage"
+import ChatPage from "@/pages/ChatPage"
+import SettingsPage from "@/pages/SettingsPage"
 import ProtectedRoute from "./ProtectedRoute"
-import { AppLayout } from "@/layouts/AppLayout"
+import { AppShell } from "@/components/layout/AppShell"
 
 export function AppRoutes() {
   return (
@@ -18,12 +21,54 @@ export function AppRoutes() {
         path="/dashboard"
         element={
           <ProtectedRoute>
-            <AppLayout
+            <AppShell
               title="Dashboard"
               description="Overview of your repositories and AI sessions"
             >
               <DashboardPage />
-            </AppLayout>
+            </AppShell>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/repositories"
+        element={
+          <ProtectedRoute>
+            <AppShell
+              title="Repositories"
+              description="Manage and index your GitHub repositories"
+            >
+              <RepositoriesPage />
+            </AppShell>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/chat"
+        element={
+          <ProtectedRoute>
+            <AppShell
+              title="Chat"
+              description="Ground queries and conversations against your codebase"
+            >
+              <ChatPage />
+            </AppShell>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <AppShell
+              title="Settings"
+              description="Manage preferences and connected accounts"
+            >
+              <SettingsPage />
+            </AppShell>
           </ProtectedRoute>
         }
       />
@@ -32,7 +77,7 @@ export function AppRoutes() {
         path="*"
         element={
           <div className="flex min-h-svh items-center justify-center">
-            <h1 className="text-2xl font-bold">CodeAtlas Page Not Found</h1>
+            <h1 className="text-2xl font-bold font-heading">Page Not Found</h1>
           </div>
         }
       />

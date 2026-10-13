@@ -1,1 +1,1 @@
-export { AppLayout, AppShell, BrandMark, default } from "@/layouts/AppLayout"
+export { AppShell, AppLayout, BrandMark, default } from "./AppShell"

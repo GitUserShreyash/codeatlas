@@ -10,9 +10,11 @@ import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CodeContextRetriever {
 
     private static final String NO_MATCHES =
@@ -33,7 +35,13 @@ public class CodeContextRetriever {
                 .filterExpression(filter)
                 .build();
 
+        long start = System.currentTimeMillis();
+
         var documents = vectorStore.similaritySearch(search);
+
+        long end = System.currentTimeMillis();
+
+        log.info("Vector search total time: {} ms", end - start);
 
         var citations = documents.stream()
                 .map(citationMapper::fromDocument)

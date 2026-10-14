@@ -44,29 +44,62 @@ public class ChatStreamHandler {
                     .name("user_message")
                     .data(savedUserMessage));
 
-            ChatClient.builder(chatModel)
-                    .build()
-                    .prompt()
+            long start = System.currentTimeMillis();
+
+            ChatClient client = ChatClient.builder(chatModel).build();
+            log.info("[TIMING] Client build: {} ms",
+                    System.currentTimeMillis() - start);
+
+            long promptStart = System.currentTimeMillis();
+
+            var promptSpec = client.prompt()
                     .system(systemPrompt)
-                    .user(userPrompt)
-                    .stream()
-                    .content()
-                    .doOnNext(token -> appendToken(emitter, fullReply, token))
-                    .doOnError(error -> {
-                        log.error("Chat stream error", error);
-                        emitter.completeWithError(error);
+                    .user(userPrompt);
+
+            log.info("[TIMING] Prompt setup: {} ms",
+                    System.currentTimeMillis() - promptStart);
+
+            long streamStart = System.currentTimeMillis();
+
+            var responseStream = promptSpec.stream().content();
+
+            log.info("[TIMING] Stream creation: {} ms",
+                    System.currentTimeMillis() - streamStart);
+
+            long subscribeStart = System.currentTimeMillis();
+
+            java.util.concurrent.atomic.AtomicBoolean firstToken =
+                    new java.util.concurrent.atomic.AtomicBoolean(true);
+
+            responseStream
+                    .doOnSubscribe(subscription ->
+                            log.info("[TIMING] Subscription callback: {} ms",
+                                    System.currentTimeMillis() - subscribeStart))
+                    .doOnNext(token -> {
+                        if (firstToken.compareAndSet(true, false)) {
+                            log.info("[TIMING] First token received after {} ms",
+                                    System.currentTimeMillis() - subscribeStart);
+                        }
+                        appendToken(emitter, fullReply, token);
                     })
-                    .doOnComplete(() ->
-                            completeStream(
-                                    emitter,
-                                    sessionId,
-                                    fullReply,
-                                    citations))
+                    .doOnError(error -> {
+                        log.error("[TIMING] Stream failed after {} ms",
+                                System.currentTimeMillis() - subscribeStart, error);
+                        sendErrorAndComplete(emitter, error.getMessage());
+                    })
+                    .doOnComplete(() -> {
+                        log.info("[TIMING] Stream completed after {} ms",
+                                System.currentTimeMillis() - subscribeStart);
+                        completeStream(emitter, sessionId, fullReply, citations);
+                    })
                     .subscribe();
+
+            log.info("[TIMING] subscribe() returned after {} ms",
+                    System.currentTimeMillis() - subscribeStart);
 
         } catch (Exception e) {
             log.error("Failed to start chat stream", e);
-            emitter.completeWithError(e);
+            sendErrorAndComplete(emitter, e.getMessage());
         }
 
         return emitter;
@@ -118,6 +151,27 @@ public class ChatStreamHandler {
 
         } catch (Exception e) {
             throw new IllegalStateException("Failed to send chat token", e);
+        }
+    }
+
+    /**
+     * Sends a named SSE {@code error} event with the given message, then
+     * completes the emitter normally. This avoids calling
+     * {@link SseEmitter#completeWithError} which would cause Spring's
+     * {@code GlobalExceptionHandler} to attempt writing a JSON
+     * {@code ErrorResponse} body over the already-open
+     * {@code text/event-stream} connection, resulting in a
+     * {@code HttpMessageNotWritableException}.
+     */
+    private void sendErrorAndComplete(SseEmitter emitter, String message) {
+        try {
+            emitter.send(SseEmitter.event()
+                    .name("error")
+                    .data(message != null ? message : "An unexpected error occurred"));
+            emitter.complete();
+        } catch (Exception ex) {
+            log.error("Failed to send SSE error event", ex);
+            emitter.complete();
         }
     }
 
